@@ -20,13 +20,16 @@ Detail: https://github.com/Senparc/Senparc.CO2NET/blob/master/LICENSE
 #endregion Apache License Version 2.0
 
 /*----------------------------------------------------------------
-    Copyright (C) 2018 Senparc
+    Copyright (C) 2019 Senparc
 
     文件名：HttpClientHelper.cs
     文件功能描述：HttpClient 相关帮助类
 
 
     创建标识：Senparc - 20190429
+
+    修改标识：Senparc - 20190521
+    修改描述：v0.7.2.1 解决 GetHttpClientHandler() 方法中 cookieContainer 为 null 可能发生的异常
 
 ----------------------------------------------------------------*/
 
@@ -74,14 +77,20 @@ namespace Senparc.CO2NET.HttpUtility
         /// <returns></returns>
         public static HttpClientHandler GetHttpClientHandler(CookieContainer cookieContainer = null, IWebProxy webProxy = null, DecompressionMethods decompressionMethods = DecompressionMethods.None)
         {
-            return new HttpClientHandler()
+            var httpClientHandler = new HttpClientHandler()
             {
                 UseProxy = webProxy != null,
                 Proxy = webProxy,
                 UseCookies = cookieContainer != null,
-                CookieContainer = cookieContainer,
+                //CookieContainer = cookieContainer,//如果为null，赋值的时候会出现异常
                 AutomaticDecompression = decompressionMethods
             };
+
+            if (cookieContainer!=null)
+            {
+                httpClientHandler.CookieContainer = cookieContainer;
+            }
+            return httpClientHandler;
         }
 
         /// <summary>

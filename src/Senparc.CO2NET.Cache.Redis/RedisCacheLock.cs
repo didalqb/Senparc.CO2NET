@@ -19,7 +19,7 @@ Detail: https://github.com/Senparc/Senparc.CO2NET/blob/master/LICENSE
 #endregion Apache License Version 2.0
 
 /*----------------------------------------------------------------
-    Copyright (C) 2018 Senparc
+    Copyright (C) 2019 Senparc
 
     文件名：RedisCacheLock.cs
     文件功能描述：本地锁
@@ -129,7 +129,7 @@ namespace Senparc.CO2NET.Cache.Redis
 
             var ttl = base.GetTotalTtl(_retryCount, _retryDelay);
 
-            Tuple<bool, Lock> result = await _dlm.LockAsync(_resourceName, TimeSpan.FromMilliseconds(ttl));
+            Tuple<bool, Lock> result = await _dlm.LockAsync(_resourceName, TimeSpan.FromMilliseconds(ttl)).ConfigureAwait(false);
             base.LockSuccessful = result.Item1;
             _lockObject = result.Item2;
             return this;
@@ -139,7 +139,7 @@ namespace Senparc.CO2NET.Cache.Redis
         {
             if (_lockObject != null)
             {
-                await _dlm.UnlockAsync(_lockObject);
+                await _dlm.UnlockAsync(_lockObject).ConfigureAwait(false);
             }
         }
 

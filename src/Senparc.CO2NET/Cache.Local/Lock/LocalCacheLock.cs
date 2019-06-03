@@ -19,7 +19,7 @@ Detail: https://github.com/Senparc/Senparc.CO2NET/blob/master/LICENSE
 #endregion Apache License Version 2.0
 
 /*----------------------------------------------------------------
-    Copyright (C) 2018 Senparc
+    Copyright (C) 2019 Senparc
 
     文件名：LocalCacheLock.cs
     文件功能描述：本地锁
@@ -168,7 +168,7 @@ namespace Senparc.CO2NET.Cache
         {
             //TODO：异常处理
 
-            return await Task.Factory.StartNew(() => Lock());
+            return await Task.Factory.StartNew(() => Lock()).ConfigureAwait(false);
         }
 
         public override Task UnLockAsync()
